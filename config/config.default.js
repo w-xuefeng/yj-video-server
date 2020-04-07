@@ -17,7 +17,7 @@ module.exports = appInfo => {
       port: 3306,
       username: 'root',
       password: 'root',
-      database: 'myproject',
+      database: 'vod',
     },
     security: {
       csrf: {

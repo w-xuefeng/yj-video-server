@@ -3,13 +3,13 @@
 module.exports = app => {
   const { STRING, INTEGER, DATE } = app.Sequelize;
 
-  const User = app.model.define('user', {
+  const Banner = app.model.define('banner', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    username: STRING(30),
-    password: STRING(50),
+    title: STRING(255),
+    imgurl: STRING(255),
     created_time: DATE,
-    collection: app.Sequelize.JSON
-  }, { timestamps: false });
+    videoid: INTEGER
+  });
 
-  return User;
+  return Banner;
 };

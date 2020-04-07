@@ -3,13 +3,11 @@
 module.exports = app => {
   const { STRING, INTEGER, DATE } = app.Sequelize;
 
-  const User = app.model.define('user', {
+  const Videotype = app.model.define('videotype', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    username: STRING(30),
-    password: STRING(50),
+    typename: STRING(255),
     created_time: DATE,
-    collection: app.Sequelize.JSON
-  }, { timestamps: false });
+  });
 
-  return User;
+  return Videotype;
 };

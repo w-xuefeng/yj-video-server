@@ -1,5 +1,5 @@
 'use strict';
-
+const md5 = require('md5-node');
 const Controller = require('egg').Controller;
 
 function toInt(str) {
@@ -11,19 +11,31 @@ function toInt(str) {
 class UserController extends Controller {
   async index() {
     const ctx = this.ctx;
-    const query = { limit: toInt(ctx.query.limit), offset: toInt(ctx.query.offset) };
-    ctx.body = await ctx.model.User.findAll(query);
+    const query = {
+      limit: toInt(ctx.query.limit),
+      offset: toInt(ctx.query.offset),
+      attributes: ['id', 'username', 'created_time', 'collection']
+    };
+    const result = await ctx.model.User.findAll(query);
+    ctx.body = result
   }
 
   async show() {
     const ctx = this.ctx;
-    ctx.body = await ctx.model.User.findByPk(toInt(ctx.params.id));
+    ctx.body = await ctx.model.User.findByPk(toInt(ctx.params.id), {
+      attributes: ['id', 'username', 'created_time', 'collection']
+    });
   }
 
   async create() {
     const ctx = this.ctx;
-    const { name, age } = ctx.request.body;
-    const user = await ctx.model.User.create({ name, age });
+    const { username, password } = ctx.request.body;
+    const user = await ctx.model.User.create({
+      username,
+      password: md5(md5(password)),
+      created_time: Date.now(),
+      collection: []
+    });
     ctx.status = 201;
     ctx.body = user;
   }
@@ -37,8 +49,8 @@ class UserController extends Controller {
       return;
     }
 
-    const { name, age } = ctx.request.body;
-    await user.update({ name, age });
+    const { password } = ctx.request.body;
+    await user.update({ password: md5(md5(password)) });
     ctx.body = user;
   }
 
