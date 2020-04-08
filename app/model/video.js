@@ -12,7 +12,7 @@ module.exports = app => {
     videourl: STRING(255),
     videocover: STRING(255),
     created_time: DATE,
-  });
+  }, { timestamps: false });
 
   return Video;
 };

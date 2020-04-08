@@ -9,7 +9,7 @@ module.exports = app => {
     imgurl: STRING(255),
     created_time: DATE,
     videoid: INTEGER
-  });
+  }, { timestamps: false });
 
   return Banner;
 };

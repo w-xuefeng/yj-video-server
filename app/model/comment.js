@@ -9,7 +9,7 @@ module.exports = app => {
     userid: INTEGER,
     content: TEXT,
     created_time: DATE,
-  });
+  }, { timestamps: false });
 
   return Comment;
 };

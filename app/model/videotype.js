@@ -7,7 +7,7 @@ module.exports = app => {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     typename: STRING(255),
     created_time: DATE,
-  });
+  }, { timestamps: false });
 
   return Videotype;
 };
