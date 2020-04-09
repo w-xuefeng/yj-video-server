@@ -12,5 +12,6 @@ module.exports = app => {
   router.get('comments', '/comments/video', controller.comment.findCommentsByVideoId);
   router.get('comments', '/comments/user', controller.comment.findCommentsByUserId);
   router.resources('videos', '/videos', controller.video);
-  router.resources('videotype', '/videotype', controller.videotype);
+  router.resources('videotypes', '/videotypes', controller.videotype);
+  router.post('/login', controller.session.login);
 };

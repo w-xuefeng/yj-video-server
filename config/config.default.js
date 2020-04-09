@@ -41,11 +41,23 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1586242297261_2642';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = [
+    'handleToken'
+  ];
+
+  config.handleToken = {
+    tokenKey: 'authorization',
+    baseContent: 'Bearer',
+    keeptime: 2 * 24 * 60 * 60 * 1000,
+    whiteList: [
+      '/login'
+    ]
+  }
 
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    tokenPrivate: 'yangjin'
   };
 
   return {

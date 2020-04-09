@@ -63,7 +63,7 @@ class BannerController extends Controller {
       created_time: Date.now(),
     });
     ctx.status = 201; // 表示已创建
-    ctx.body = banner; // 响应前端body
+    ctx.body = SuccessRes(banner); // 响应前端body
   }
 
   async update() {
@@ -72,11 +72,14 @@ class BannerController extends Controller {
     const banner = await ctx.model.Banner.findByPk(id);
     if (!banner) {
       ctx.status = 404; // 未找到
+      ctx.body = ErrorRes('banner不存在');
       return;
     }
     const { title, videoid, imgurl } = ctx.request.body;
     await banner.update({ title, videoid, imgurl });
-    ctx.body = banner;
+    ctx.body = SuccessRes({
+      message: '修改成功'
+    });
   }
 
   async destroy() {
@@ -85,10 +88,14 @@ class BannerController extends Controller {
     const banner = await ctx.model.Banner.findByPk(id);
     if (!banner) {
       ctx.status = 404;
+      ctx.body = ErrorRes('banner不存在');
       return;
     }
     await banner.destroy();
     ctx.status = 200;  // "ok"
+    ctx.body = SuccessRes({
+      message: '删除成功'
+    });
   }
 }
 
