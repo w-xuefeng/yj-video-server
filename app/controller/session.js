@@ -31,12 +31,23 @@ class SessionController extends Controller {
     }
 
     if (md5(md5(password)) === ifuser.password) {
-      const strings = `${ifuser.id}-${ifuser.username}-${ifuser.password}`;
       const { id, username, created_time } = ifuser;
+      const strings = `${id}-${username}`;
+      const token = myEncode(strings, this.app.config.tokenPrivate);
+      // 生成 token
+      const islogin = await ctx.model.Loginsession.findOne({ where: { userid: id } });
+      // 查询 session 表中用户是否登陆过
+      if (islogin) {
+        await islogin.update({ token });
+        // 更新登录 token
+      } else {
+        await ctx.model.Loginsession.create({ userid: id, token });
+        // 创建登录 token
+      }
+      ctx.rotateCsrfSecret();
+      // 刷新 x-csrf-token
       ctx.status = 200;
-      ctx.body = SuccessRes({
-        id, username, created_time, token: myEncode(strings, this.app.config.tokenPrivate),
-      });
+      ctx.body = SuccessRes({ id, username, created_time, token });
     } else {
       ctx.status = 400;
       ctx.body = ErrorRes('密码错误');
