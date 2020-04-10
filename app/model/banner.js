@@ -8,7 +8,7 @@ module.exports = app => {
     title: STRING(255),
     imgurl: STRING(255),
     created_time: DATE,
-    videoid: INTEGER
+    videoid: INTEGER,
   }, { timestamps: false });
 
   return Banner;
