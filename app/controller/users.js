@@ -15,37 +15,37 @@ class UserController extends Controller {
     const query = {
       limit: toInt(ctx.query.limit),
       offset: toInt(ctx.query.offset),
-      attributes: ['id', 'username', 'created_time', 'collection']
+      attributes: [ 'id', 'username', 'created_time', 'collection' ],
     };
     const result = await ctx.model.User.findAll(query);
-    ctx.body = SuccessRes(result)
+    ctx.body = SuccessRes(result);
   }
 
   async show() {
     const ctx = this.ctx;
     const user = await ctx.model.User.findByPk(toInt(ctx.params.id), {
-      attributes: ['id', 'username', 'created_time', 'collection']
-    })
+      attributes: [ 'id', 'username', 'created_time', 'collection' ],
+    });
     ctx.body = user ? SuccessRes(user) : ErrorRes('用户不存在');
   }
 
   async create() {
     const ctx = this.ctx;
     let { username = '', password = '' } = ctx.request.body;
-    username = username.trim()
-    password = password.trim()
+    username = username.trim();
+    password = password.trim();
     if (!username) {
       ctx.status = 200;
       ctx.body = ErrorRes('用户名不能为空');
-      return
+      return;
     }
     if (!password) {
       ctx.status = 200;
       ctx.body = ErrorRes('密码不能为空');
-      return
+      return;
     }
     const ifuser = await ctx.model.User.findOne({
-      where: { username }
+      where: { username },
     });
     if (ifuser) {
       ctx.status = 200;
@@ -57,7 +57,7 @@ class UserController extends Controller {
       username,
       password: md5(md5(password)),
       created_time: Date.now(),
-      collection: []
+      collection: [],
     });
     ctx.status = 201;
     ctx.body = SuccessRes(user);
@@ -76,7 +76,7 @@ class UserController extends Controller {
     const { password } = ctx.request.body;
     await user.update({ password: md5(md5(password)) });
     ctx.body = SuccessRes({
-      message: '修改成功'
+      message: '修改成功',
     });
   }
 
@@ -93,7 +93,7 @@ class UserController extends Controller {
     await user.destroy();
     ctx.status = 200;
     ctx.body = SuccessRes({
-      message: '删除成功'
+      message: '删除成功',
     });
   }
 }

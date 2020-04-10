@@ -22,7 +22,7 @@ function toInt(str) {
  *
  */
 
- /**
+/**
   * 2.params (pathinfo)
   * /path/content/:a/:b
   * https://yj.com:7001/path/content/10/yangjin
@@ -44,8 +44,8 @@ function toInt(str) {
 class BannerController extends Controller {
   async index() {
     const ctx = this.ctx;
-    const result = await ctx.model.Banner.findAll({ timestepe: false});
-    ctx.body = result.length === 0 ? ErrorRes("暂无数据") : SuccessRes(result); // 将查询到的结果赋值给 响应的主体
+    const result = await ctx.model.Banner.findAll({ timestepe: false });
+    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result); // 将查询到的结果赋值给 响应的主体
   }
 
   async show() {
@@ -78,7 +78,7 @@ class BannerController extends Controller {
     const { title, videoid, imgurl } = ctx.request.body;
     await banner.update({ title, videoid, imgurl });
     ctx.body = SuccessRes({
-      message: '修改成功'
+      message: '修改成功',
     });
   }
 
@@ -92,9 +92,9 @@ class BannerController extends Controller {
       return;
     }
     await banner.destroy();
-    ctx.status = 200;  // "ok"
+    ctx.status = 200; // "ok"
     ctx.body = SuccessRes({
-      message: '删除成功'
+      message: '删除成功',
     });
   }
 }

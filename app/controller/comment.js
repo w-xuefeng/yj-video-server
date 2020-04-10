@@ -19,10 +19,10 @@ class CommentController extends Controller {
       offset: toInt(ctx.query.offset),
       where: {
         videoid: toInt(ctx.query.id),
-      }
+      },
     };
     const result = await ctx.model.Comment.findAll(query);
-    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result)
+    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
   }
 
 
@@ -33,10 +33,10 @@ class CommentController extends Controller {
       offset: toInt(ctx.query.offset),
       where: {
         userid: toInt(ctx.query.id),
-      }
+      },
     };
     const result = await ctx.model.Comment.findAll(query);
-    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result)
+    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
   }
 
   async create() {
@@ -63,9 +63,7 @@ class CommentController extends Controller {
     }
     await comment.destroy();
     ctx.status = 200;
-    ctx.body = SuccessRes({
-      message: '删除成功'
-    });
+    ctx.body = SuccessRes({ message: '删除成功' });
   }
 }
 

@@ -13,7 +13,7 @@ class VideoController extends Controller {
     const ctx = this.ctx;
     const query = {
       limit: toInt(ctx.query.limit),
-      offset: toInt(ctx.query.offset)
+      offset: toInt(ctx.query.offset),
     };
     const result = await ctx.model.Video.findAll(query);
     ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
@@ -33,7 +33,7 @@ class VideoController extends Controller {
       videotype = 1,
       videocover = '',
       videotime = '',
-      videosize = ''
+      videosize = '',
     } = ctx.request.body;
     const video = await ctx.model.Video.create({
       videoname,
@@ -44,8 +44,8 @@ class VideoController extends Controller {
       videocover,
       created_time: Date.now(),
     });
-    ctx.status = 201; //表示已创建
-    ctx.body = SuccessRes(video); //响应前端body
+    ctx.status = 201; // 表示已创建
+    ctx.body = SuccessRes(video); // 响应前端body
   }
 
   async update() {
@@ -59,7 +59,7 @@ class VideoController extends Controller {
     }
 
     const { videoname, videotype, videocover } = ctx.request.body;
-    await video.update({ videoname,videocover,videotype });
+    await video.update({ videoname, videocover, videotype });
     ctx.body = SuccessRes(video);
   }
 
@@ -74,9 +74,9 @@ class VideoController extends Controller {
     }
 
     await video.destroy();
-    ctx.status = 200;  // "ok"
+    ctx.status = 200; // "ok"
     ctx.body = SuccessRes({
-      message: '删除成功'
+      message: '删除成功',
     });
   }
 }

@@ -9,20 +9,20 @@ class SessionController extends Controller {
   async login() {
     const ctx = this.ctx;
     let { username = '', password = '' } = ctx.request.body;
-    username = username.trim()
-    password = password.trim()
+    username = username.trim();
+    password = password.trim();
     if (!username) {
       ctx.status = 200;
       ctx.body = ErrorRes('用户名不能为空');
-      return
+      return;
     }
     if (!password) {
       ctx.status = 200;
       ctx.body = ErrorRes('密码不能为空');
-      return
+      return;
     }
     const ifuser = await ctx.model.User.findOne({
-      where: { username }
+      where: { username },
     });
     if (!ifuser) {
       ctx.status = 400;
@@ -31,11 +31,11 @@ class SessionController extends Controller {
     }
 
     if (md5(md5(password)) === ifuser.password) {
-      const strings = `${ifuser.id}-${ifuser.username}-${ifuser.password}`
-      const { id, username, created_time } = ifuser
+      const strings = `${ifuser.id}-${ifuser.username}-${ifuser.password}`;
+      const { id, username, created_time } = ifuser;
       ctx.status = 200;
       ctx.body = SuccessRes({
-        id, username, created_time, token: myEncode(strings, this.app.config.tokenPrivate)
+        id, username, created_time, token: myEncode(strings, this.app.config.tokenPrivate),
       });
     } else {
       ctx.status = 400;

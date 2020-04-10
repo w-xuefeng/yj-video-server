@@ -9,7 +9,7 @@ module.exports = {
       username: STRING(30),
       password: STRING(50),
       created_time: DATE,
-      collection: Sequelize.JSON
+      collection: Sequelize.JSON,
     });
   },
   // 在执行数据库降级时调用的函数，删除 users 表

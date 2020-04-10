@@ -23,12 +23,12 @@ module.exports = appInfo => {
         dateStrings: true,
         typeCast(field, next) {
           // for reading from database
-          if (field.type === "DATETIME") {
+          if (field.type === 'DATETIME') {
             return field.string();
           }
           return next();
-        }
-      }
+        },
+      },
     },
     security: {
       csrf: {
@@ -42,7 +42,7 @@ module.exports = appInfo => {
 
   // add your middleware config here
   config.middleware = [
-    'handleToken'
+    'handleToken',
   ];
 
   config.handleToken = {
@@ -50,14 +50,14 @@ module.exports = appInfo => {
     baseContent: 'Bearer',
     keeptime: 2 * 24 * 60 * 60 * 1000,
     whiteList: [
-      '/login'
-    ]
-  }
+      '/login',
+    ],
+  };
 
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
-    tokenPrivate: 'yangjin'
+    tokenPrivate: 'yangjin',
   };
 
   return {

@@ -52,10 +52,8 @@ class VideoTypeController extends Controller {
     }
 
     await videotype.destroy();
-    ctx.status = 200;  // "ok"
-    ctx.body = SuccessRes({
-      message: '删除成功'
-    });
+    ctx.status = 200; // "ok"
+    ctx.body = SuccessRes({ message: '删除成功' });
   }
 }
 
