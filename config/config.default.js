@@ -33,6 +33,9 @@ module.exports = appInfo => {
     security: {
       csrf: {
         headerName: 'x-csrf-token', // 通过 header 传递 CSRF token 的默认字段为 x-csrf-token
+        useSession: true, // 默认为 false，当设置为 true 时，将会把 csrf token 保存到 Session 中
+        cookieName: 'csrfToken', // Cookie 中的字段名，默认为 csrfToken
+        sessionName: 'csrfToken', // Session 中的字段名，默认为 csrfToken
       },
     },
   };
@@ -50,7 +53,12 @@ module.exports = appInfo => {
     baseContent: 'Bearer',
     keeptime: 2 * 24 * 60 * 60 * 1000,
     whiteList: [
+      '/',
       '/login',
+      {
+        url: '/users',
+        method: 'POST',
+      },
     ],
   };
 
