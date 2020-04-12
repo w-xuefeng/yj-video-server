@@ -71,7 +71,7 @@ class BannerController extends Controller {
     const id = toInt(ctx.params.id);
     const banner = await ctx.model.Banner.findByPk(id);
     if (!banner) {
-      ctx.status = 404; // 未找到
+      // ctx.status = 404; // 未找到
       ctx.body = ErrorRes('banner不存在');
       return;
     }
@@ -87,7 +87,7 @@ class BannerController extends Controller {
     const id = toInt(ctx.params.id);
     const banner = await ctx.model.Banner.findByPk(id);
     if (!banner) {
-      ctx.status = 404;
+      // ctx.status = 404;
       ctx.body = ErrorRes('banner不存在');
       return;
     }

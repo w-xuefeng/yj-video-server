@@ -25,7 +25,7 @@ class SessionController extends Controller {
       where: { username },
     });
     if (!ifuser) {
-      ctx.status = 400;
+      // ctx.status = 400;
       ctx.body = ErrorRes('用户不存在');
       return;
     }
@@ -49,7 +49,7 @@ class SessionController extends Controller {
       ctx.status = 200;
       ctx.body = SuccessRes({ id, username, created_time, token });
     } else {
-      ctx.status = 400;
+      // ctx.status = 400;
       ctx.body = ErrorRes('密码错误');
     }
   }

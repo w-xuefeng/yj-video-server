@@ -68,7 +68,7 @@ class UserController extends Controller {
     const id = toInt(ctx.params.id);
     const user = await ctx.model.User.findByPk(id);
     if (!user) {
-      ctx.status = 404;
+      // ctx.status = 404;
       ctx.body = ErrorRes('用户不存在');
       return;
     }
@@ -85,7 +85,7 @@ class UserController extends Controller {
     const id = toInt(ctx.params.id);
     const user = await ctx.model.User.findByPk(id);
     if (!user) {
-      ctx.status = 404; // 未找到
+      // ctx.status = 404; // 未找到
       ctx.body = ErrorRes('用户不存在');
       return;
     }

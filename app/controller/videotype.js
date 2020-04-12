@@ -31,7 +31,7 @@ class VideoTypeController extends Controller {
     const id = toInt(ctx.params.id);
     const videotype = await ctx.model.Videotype.findByPk(id);
     if (!videotype) {
-      ctx.status = 404; // 未找到
+      // ctx.status = 404; // 未找到
       ctx.body = ErrorRes('视频类型不存在');
       return;
     }
@@ -46,7 +46,7 @@ class VideoTypeController extends Controller {
     const id = toInt(ctx.params.id);
     const videotype = await ctx.model.Videotype.findByPk(id);
     if (!videotype) {
-      ctx.status = 404;
+      // ctx.status = 404;
       ctx.body = ErrorRes('视频类型不存在');
       return;
     }

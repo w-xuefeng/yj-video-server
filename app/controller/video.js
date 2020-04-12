@@ -53,7 +53,7 @@ class VideoController extends Controller {
     const id = toInt(ctx.params.id);
     const video = await ctx.model.Video.findByPk(id);
     if (!video) {
-      ctx.status = 404;
+      // ctx.status = 404;
       ctx.body = ErrorRes('视频不存在');
       return;
     }
@@ -68,7 +68,7 @@ class VideoController extends Controller {
     const id = toInt(ctx.params.id);
     const video = await ctx.model.Video.findByPk(id);
     if (!video) {
-      ctx.status = 404; // 未找到
+      // ctx.status = 404; // 未找到
       ctx.body = ErrorRes('视频不存在');
       return;
     }

@@ -57,7 +57,7 @@ class CommentController extends Controller {
     const id = toInt(ctx.params.id);
     const comment = await ctx.model.Comment.findByPk(id);
     if (!comment) {
-      ctx.status = 404; // 未找到
+      // ctx.status = 404; // 未找到
       ctx.body = ErrorRes('评论不存在');
       return;
     }

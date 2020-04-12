@@ -10,6 +10,7 @@ module.exports = appInfo => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
+  // ORM mysql2
   const config = exports = {
     sequelize: {
       dialect: 'mysql',
