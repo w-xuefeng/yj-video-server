@@ -11,9 +11,16 @@ function toInt(str) {
 class VideoController extends Controller {
   async index() {
     const ctx = this.ctx;
+    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotype', targetKey: 'id' });
     const query = {
       limit: toInt(ctx.query.limit),
       offset: toInt(ctx.query.offset),
+      include: [
+        {
+          model: ctx.model.Videotypes,
+          required: true,
+        },
+      ],
     };
     const result = await ctx.model.Video.findAll(query);
     ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
@@ -30,7 +37,7 @@ class VideoController extends Controller {
     const {
       videoname = '',
       videourl = '',
-      videotype = 1,
+      videotypeid = 1,
       videocover = '',
       videotime = '',
       videosize = '',
@@ -38,7 +45,7 @@ class VideoController extends Controller {
     const video = await ctx.model.Video.create({
       videoname,
       videosize,
-      videotype,
+      videotypeid,
       videourl,
       videotime,
       videocover,
@@ -58,8 +65,8 @@ class VideoController extends Controller {
       return;
     }
 
-    const { videoname, videotype, videocover } = ctx.request.body;
-    await video.update({ videoname, videocover, videotype });
+    const { videoname, videotypeid, videocover } = ctx.request.body;
+    await video.update({ videoname, videocover, videotypeid });
     ctx.body = SuccessRes(video);
   }
 

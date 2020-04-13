@@ -8,7 +8,7 @@ module.exports = app => {
     videoname: STRING(100),
     videosize: STRING(50),
     videotime: STRING(50),
-    videotype: INTEGER,
+    videotypeid: INTEGER,
     videourl: STRING(255),
     videocover: STRING(255),
     created_time: DATE,

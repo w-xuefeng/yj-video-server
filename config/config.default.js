@@ -37,7 +37,9 @@ module.exports = appInfo => {
       },
     },
   };
-
+  config.assets = {
+    publicPath: '/public/',
+  };
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1586242297261_2642';
 
@@ -53,6 +55,9 @@ module.exports = appInfo => {
     whiteList: [
       '/',
       '/login',
+      '/videotypes',
+      '/banners',
+      '/public',
       {
         url: '/users',
         method: 'POST',

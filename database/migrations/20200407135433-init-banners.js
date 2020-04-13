@@ -10,6 +10,7 @@ module.exports = {
       imgurl: STRING(255),
       created_time: DATE,
       videoid: INTEGER,
+      videotypeid: INTEGER,
     });
   },
   // 在执行数据库降级时调用的函数，删除 banners 表

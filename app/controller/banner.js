@@ -44,7 +44,21 @@ function toInt(str) {
 class BannerController extends Controller {
   async index() {
     const ctx = this.ctx;
-    const result = await ctx.model.Banner.findAll({ timestepe: false });
+    ctx.model.Banner.belongsTo(ctx.model.Video, { foreignKey: 'videoid', targetKey: 'id' });
+    ctx.model.Banner.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    const result = await ctx.model.Banner.findAll({
+      timestepe: false,
+      include: [
+        {
+          model: ctx.model.Video,
+          required: true,
+        },
+        {
+          model: ctx.model.Videotypes,
+          required: true,
+        },
+      ],
+    });
     ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result); // 将查询到的结果赋值给 响应的主体
   }
 

@@ -11,14 +11,14 @@ function toInt(str) {
 class VideoTypeController extends Controller {
   async index() {
     const ctx = this.ctx;
-    const result = await ctx.model.Videotype.findAll();
+    const result = await ctx.model.Videotypes.findAll();
     ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
   }
 
   async create() {
     const ctx = this.ctx;
     const { typename } = ctx.request.body;
-    const videotype = await ctx.model.Videotype.create({
+    const videotype = await ctx.model.Videotypes.create({
       typename,
       created_time: Date.now(),
     });
@@ -29,7 +29,7 @@ class VideoTypeController extends Controller {
   async update() {
     const ctx = this.ctx;
     const id = toInt(ctx.params.id);
-    const videotype = await ctx.model.Videotype.findByPk(id);
+    const videotype = await ctx.model.Videotypes.findByPk(id);
     if (!videotype) {
       // ctx.status = 404; // 未找到
       ctx.body = ErrorRes('视频类型不存在');
@@ -44,7 +44,7 @@ class VideoTypeController extends Controller {
   async destroy() {
     const ctx = this.ctx;
     const id = toInt(ctx.params.id);
-    const videotype = await ctx.model.Videotype.findByPk(id);
+    const videotype = await ctx.model.Videotypes.findByPk(id);
     if (!videotype) {
       // ctx.status = 404;
       ctx.body = ErrorRes('视频类型不存在');
