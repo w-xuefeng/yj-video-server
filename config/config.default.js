@@ -59,6 +59,10 @@ module.exports = appInfo => {
       '/banners',
       '/public',
       {
+        url: '/videos',
+        method: 'GET',
+      },
+      {
         url: '/users',
         method: 'POST',
       },

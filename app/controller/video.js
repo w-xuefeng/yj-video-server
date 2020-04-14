@@ -11,10 +11,12 @@ function toInt(str) {
 class VideoController extends Controller {
   async index() {
     const ctx = this.ctx;
-    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotype', targetKey: 'id' });
+    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
     const query = {
       limit: toInt(ctx.query.limit),
       offset: toInt(ctx.query.offset),
+      where: { videotypeid: ctx.query.videotypeid },
+      order: [[ 'id', 'DESC' ]],
       include: [
         {
           model: ctx.model.Videotypes,
@@ -23,6 +25,22 @@ class VideoController extends Controller {
       ],
     };
     const result = await ctx.model.Video.findAll(query);
+    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
+  }
+
+  async recommend() {
+    const ctx = this.ctx;
+    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    const result = await ctx.model.Video.findAll({
+      limit: ctx.query.limit || 5,
+      order: this.app.Sequelize.random,
+      include: [
+        {
+          model: ctx.model.Videotypes,
+          required: true,
+        },
+      ],
+    });
     ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
   }
 
