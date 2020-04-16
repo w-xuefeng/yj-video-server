@@ -24,8 +24,8 @@ class VideoController extends Controller {
         },
       ],
     };
-    const result = await ctx.model.Video.findAll(query);
-    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
+    const { count, rows } = await ctx.model.Video.findAndCountAll(query);
+    ctx.body = count === 0 ? ErrorRes('暂无数据') : { ...SuccessRes(rows), count };
   }
 
   async recommend() {
@@ -46,7 +46,17 @@ class VideoController extends Controller {
 
   async show() {
     const ctx = this.ctx;
-    const video = await ctx.model.Video.findByPk(toInt(ctx.params.id));
+    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    const query = {
+      where: { id: toInt(ctx.params.id) },
+      include: [
+        {
+          model: ctx.model.Videotypes,
+          required: true,
+        },
+      ],
+    };
+    const video = await ctx.model.Video.findOne(query);
     ctx.body = video ? SuccessRes(video) : ErrorRes('视频不存在');
   }
 
