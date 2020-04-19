@@ -28,6 +28,29 @@ class VideoController extends Controller {
     ctx.body = count === 0 ? ErrorRes('暂无数据') : { ...SuccessRes(rows), count };
   }
 
+  async search() {
+    const ctx = this.ctx;
+    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    const query = {
+      limit: toInt(ctx.query.limit),
+      offset: toInt(ctx.query.offset),
+      where: {
+        videoname: {
+          [this.app.Sequelize.Op.like]: `%${ctx.query.videoname}%`,
+        },
+      },
+      order: [[ 'id', 'DESC' ]],
+      include: [
+        {
+          model: ctx.model.Videotypes,
+          required: true,
+        },
+      ],
+    };
+    const { count, rows } = await ctx.model.Video.findAndCountAll(query);
+    ctx.body = count === 0 ? ErrorRes('暂无数据') : { ...SuccessRes(rows), count };
+  }
+
   async recommend() {
     const ctx = this.ctx;
     ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });

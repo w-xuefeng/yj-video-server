@@ -8,7 +8,7 @@ module.exports = app => {
     username: STRING(30),
     password: STRING(50),
     created_time: DATE,
-    collection: app.Sequelize.JSON
+    collection: app.Sequelize.JSON,
   }, { timestamps: false });
 
   return User;

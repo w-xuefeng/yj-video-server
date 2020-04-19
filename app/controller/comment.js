@@ -14,12 +14,19 @@ class CommentController extends Controller {
 
   async findCommentsByVideoId() {
     const ctx = this.ctx;
+    ctx.model.Comment.belongsTo(ctx.model.User, { foreignKey: 'userid', targetKey: 'id' });
     const query = {
       limit: toInt(ctx.query.limit),
       offset: toInt(ctx.query.offset),
       where: {
         videoid: toInt(ctx.query.id),
       },
+      include: [
+        {
+          model: ctx.model.User,
+          required: true,
+        },
+      ],
     };
     const result = await ctx.model.Comment.findAll(query);
     ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
