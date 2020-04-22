@@ -55,6 +55,7 @@ module.exports = appInfo => {
     whiteList: [
       '/',
       '/login',
+      '/login/admin',
       '/videotypes',
       '/banners',
       '/public',

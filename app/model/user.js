@@ -9,6 +9,7 @@ module.exports = app => {
     password: STRING(50),
     created_time: DATE,
     collection: app.Sequelize.JSON,
+    usertype: INTEGER,
   }, { timestamps: false });
 
   return User;

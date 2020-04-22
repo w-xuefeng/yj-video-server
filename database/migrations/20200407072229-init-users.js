@@ -10,6 +10,7 @@ module.exports = {
       password: STRING(50),
       created_time: DATE,
       collection: Sequelize.JSON,
+      usertype: INTEGER,
     });
   },
   // 在执行数据库降级时调用的函数，删除 users 表
