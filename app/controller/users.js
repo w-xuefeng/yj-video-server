@@ -21,6 +21,17 @@ class UserController extends Controller {
     ctx.body = SuccessRes(result);
   }
 
+  async getUsers() {
+    const ctx = this.ctx;
+    const query = {
+      limit: toInt(ctx.query.limit),
+      offset: toInt(ctx.query.offset),
+      attributes: [ 'id', 'username', 'created_time', 'collection' ],
+    };
+    const { count, rows } = await ctx.model.User.findAndCountAll(query);
+    ctx.body = count === 0 ? ErrorRes('暂无数据') : { ...SuccessRes(rows), count };
+  }
+
   async show() {
     const ctx = this.ctx;
     const user = await ctx.model.User.findByPk(toInt(ctx.params.id), {

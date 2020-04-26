@@ -7,6 +7,7 @@ module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
   router.resources('users', '/users', controller.users);
+  router.get('users', '/getusers', controller.users.getUsers);
   router.resources('banners', '/banners', controller.banner);
   router.resources('comments', '/comments', controller.comment);
   router.get('comments', '/comments/video', controller.comment.findCommentsByVideoId);
