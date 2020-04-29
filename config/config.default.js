@@ -17,7 +17,7 @@ module.exports = appInfo => {
       host: '127.0.0.1',
       port: 3306,
       username: 'root',
-      password: 'root',
+      password: '',
       database: 'vod',
       timezone: '+08:00', // 保存为本地时区,
       dialectOptions: {
@@ -74,6 +74,11 @@ module.exports = appInfo => {
   const userConfig = {
     // myAppName: 'egg',
     tokenPrivate: 'yangjin',
+    uploadPath: {
+      bannerPath: 'public/uploads/img/banner/',
+      videoCoverPath: 'public/uploads/img/video-cover/',
+      videoPath: 'public/uploads/videos/',
+    },
   };
 
   return {
