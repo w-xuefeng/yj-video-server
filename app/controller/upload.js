@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const sendToWormhole = require('stream-wormhole');
+const { SuccessRes, ErrorRes } = require('../utils/response');
 const Controller = require('egg').Controller;
 
 class UploaderController extends Controller {
@@ -31,7 +32,7 @@ class UploaderController extends Controller {
     }
     const fileName = `${Date.now()}-${path.basename(stream.filename)}`;
     const imgurl = `/${imgbaseurl}/${fileName}`.replace(/\/\//g, '/');
-    const httpimgurl = `${this.ctx.origin}${imgurl}`.replace(/\/\//g, '/');
+    const httpimgurl = `${this.ctx.origin}${imgurl}`;
 
     const target = `${basePath}/${fileName}`;
 
@@ -57,9 +58,19 @@ class UploaderController extends Controller {
         resolve({ url: imgurl, httpurl: httpimgurl });
       });
     });
-
-    ctx.body = { status: true, resdata: result };
-
+    ctx.body = SuccessRes(result);
+  }
+  async delfile() {
+    const ctx = this.ctx;
+    const { url = '' } = ctx.request.body;
+    const realPath = path.resolve(__dirname, url.replace(new RegExp(this.ctx.origin), '..'));
+    console.log(realPath, fs.existsSync(realPath));
+    if (fs.existsSync(realPath)) {
+      fs.unlinkSync(realPath);
+      ctx.body = SuccessRes({ message: '文件删除成功' });
+    } else {
+      ctx.body = ErrorRes('文件不存在');
+    }
   }
 }
 

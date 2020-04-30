@@ -19,4 +19,5 @@ module.exports = app => {
   router.post('/login', controller.session.login);
   router.post('/login/admin', controller.session.loginAdmin);
   router.post('/upload', controller.upload.upload);
+  router.delete('/delfile', controller.upload.delfile);
 };

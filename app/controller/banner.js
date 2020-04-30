@@ -1,5 +1,6 @@
 'use strict';
 const Controller = require('egg').Controller;
+const { delfilePath } = require('../utils/file');
 const { SuccessRes, ErrorRes } = require('../utils/response');
 
 function toInt(str) {
@@ -69,11 +70,12 @@ class BannerController extends Controller {
 
   async create() {
     const ctx = this.ctx;
-    const { title, videoid, imgurl } = ctx.request.body;
+    const { title, videoid, imgurl, videotypeid } = ctx.request.body;
     const banner = await ctx.model.Banner.create({
       title,
       videoid,
       imgurl,
+      videotypeid,
       created_time: Date.now(),
     });
     ctx.status = 201; // 表示已创建
@@ -89,8 +91,8 @@ class BannerController extends Controller {
       ctx.body = ErrorRes('banner不存在');
       return;
     }
-    const { title, videoid, imgurl } = ctx.request.body;
-    await banner.update({ title, videoid, imgurl });
+    const { title, videoid, videotypeid, imgurl } = ctx.request.body;
+    await banner.update({ title, videoid, videotypeid, imgurl });
     ctx.body = SuccessRes({
       message: '修改成功',
     });
@@ -105,6 +107,7 @@ class BannerController extends Controller {
       ctx.body = ErrorRes('banner不存在');
       return;
     }
+    delfilePath(banner.imgurl);
     await banner.destroy();
     ctx.status = 200; // "ok"
     ctx.body = SuccessRes({
