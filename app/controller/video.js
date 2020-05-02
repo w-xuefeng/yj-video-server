@@ -1,6 +1,7 @@
 'use strict';
 const Controller = require('egg').Controller;
 const { SuccessRes, ErrorRes } = require('../utils/response');
+const { delfilePath } = require('../utils/file');
 
 function toInt(str) {
   if (typeof str === 'number') return str;
@@ -131,11 +132,14 @@ class VideoController extends Controller {
       ctx.body = ErrorRes('视频不存在');
       return;
     }
-
+    const videocoverFlag = delfilePath(video.videocover);
+    const videoFlag = delfilePath(video.videourl);
     await video.destroy();
     ctx.status = 200; // "ok"
     ctx.body = SuccessRes({
       message: '删除成功',
+      videocoverFlag,
+      videoFlag,
     });
   }
 }

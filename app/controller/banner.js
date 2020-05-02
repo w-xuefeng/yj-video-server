@@ -107,11 +107,12 @@ class BannerController extends Controller {
       ctx.body = ErrorRes('banner不存在');
       return;
     }
-    delfilePath(banner.imgurl);
+    const bannerFlag = delfilePath(banner.imgurl);
     await banner.destroy();
     ctx.status = 200; // "ok"
     ctx.body = SuccessRes({
       message: '删除成功',
+      bannerFlag,
     });
   }
 }
