@@ -12,10 +12,11 @@ class VideoController extends Controller {
   async index() {
     const ctx = this.ctx;
     ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    const where = ctx.query.videotypeid ? { videotypeid: ctx.query.videotypeid } : undefined;
     const query = {
       limit: toInt(ctx.query.limit),
       offset: toInt(ctx.query.offset),
-      where: { videotypeid: ctx.query.videotypeid },
+      where,
       order: [[ 'id', 'DESC' ]],
       include: [
         {

@@ -64,7 +64,6 @@ class UploaderController extends Controller {
     const ctx = this.ctx;
     const { url = '' } = ctx.request.body;
     const realPath = path.resolve(__dirname, url.replace(new RegExp(this.ctx.origin), '..'));
-    console.log(realPath, fs.existsSync(realPath));
     if (fs.existsSync(realPath)) {
       fs.unlinkSync(realPath);
       ctx.body = SuccessRes({ message: '文件删除成功' });

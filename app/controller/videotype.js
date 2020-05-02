@@ -1,18 +1,18 @@
 'use strict';
 const Controller = require('egg').Controller;
-const { SuccessRes, ErrorRes } = require('../utils/response');
-
-function toInt(str) {
-  if (typeof str === 'number') return str;
-  if (!str) return str;
-  return parseInt(str, 10) || 0;
-}
+const { SuccessRes, ErrorRes, toObj, toInt } = require('../utils/response');
 
 class VideoTypeController extends Controller {
   async index() {
     const ctx = this.ctx;
     const result = await ctx.model.Videotypes.findAll();
-    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(result);
+    const rs = toObj(result);
+    if (rs.length > 0) {
+      for (const item of rs) {
+        item.videocount = await this.findVideoCountByTypeId(item.id);
+      }
+    }
+    ctx.body = result.length === 0 ? ErrorRes('暂无数据') : SuccessRes(rs);
   }
 
   async create() {
@@ -50,11 +50,35 @@ class VideoTypeController extends Controller {
       ctx.body = ErrorRes('视频类型不存在');
       return;
     }
-
-    await videotype.destroy();
-    ctx.status = 200; // "ok"
-    ctx.body = SuccessRes({ message: '删除成功' });
+    const count = await this.findVideoCountByTypeId(id);
+    if (count > 0) {
+      ctx.status = 200; // "ok"
+      ctx.body = ErrorRes('该栏目下视频不为空，无法删除该栏目');
+    } else {
+      await videotype.destroy();
+      ctx.status = 200; // "ok"
+      ctx.body = SuccessRes({ message: '删除成功' });
+    }
   }
+
+  async findVideoCountByTypeId(id) {
+    const ctx = this.ctx;
+    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    const query = {
+      where: { videotypeid: id },
+      order: [[ 'id', 'DESC' ]],
+      include: [
+        {
+          model: ctx.model.Videotypes,
+          required: true,
+        },
+      ],
+    };
+    const { count } = await ctx.model.Video.findAndCountAll(query);
+    return count;
+  }
+
+
 }
 
 module.exports = VideoTypeController;
