@@ -59,6 +59,7 @@ module.exports = appInfo => {
       '/videotypes',
       '/banners',
       '/public',
+      '/feedback',
       {
         url: '/videos',
         method: 'GET',
@@ -78,6 +79,12 @@ module.exports = appInfo => {
       bannerPath: 'public/uploads/img/banner/',
       videoCoverPath: 'public/uploads/img/video-cover/',
       videoPath: 'public/uploads/videos/',
+    },
+    email: {
+      host: '',
+      name: '猿学网',
+      pass: '',
+      feedback: '',
     },
   };
 
