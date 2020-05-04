@@ -13,6 +13,8 @@ class VideoController extends Controller {
   async index() {
     const ctx = this.ctx;
     ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    ctx.model.Video.hasMany(ctx.model.Comment, { foreignKey: 'videoid', sourceKey: 'id' });
+    ctx.model.Comment.belongsTo(ctx.model.User, { foreignKey: 'userid', targetKey: 'id' });
     const where = ctx.query.videotypeid ? { videotypeid: ctx.query.videotypeid } : undefined;
     const query = {
       limit: toInt(ctx.query.limit),
@@ -23,6 +25,17 @@ class VideoController extends Controller {
         {
           model: ctx.model.Videotypes,
           required: true,
+        },
+        {
+          model: ctx.model.Comment,
+          required: false,
+          include: [
+            {
+              model: ctx.model.User,
+              attributes: [ 'username' ],
+              required: false,
+            },
+          ],
         },
       ],
     };
