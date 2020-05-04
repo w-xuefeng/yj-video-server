@@ -118,8 +118,22 @@ class VideoController extends Controller {
       return;
     }
 
-    const { videoname, videotypeid, videocover } = ctx.request.body;
-    await video.update({ videoname, videocover, videotypeid });
+    const {
+      videoname,
+      videourl,
+      videotypeid,
+      videocover,
+      videotime,
+      videosize,
+    } = ctx.request.body;
+    await video.update({
+      videoname,
+      videourl,
+      videotypeid,
+      videocover,
+      videotime,
+      videosize,
+    });
     ctx.body = SuccessRes(video);
   }
 
