@@ -21,4 +21,7 @@ module.exports = app => {
   router.post('/upload', controller.upload.upload);
   router.delete('/delfile', controller.upload.delfile);
   router.post('/feedback', controller.feedback.index);
+  router.get('/collection/:uid', controller.users.getCollection);
+  router.post('/collection/add', controller.users.addCollection);
+  router.post('/collection/remove', controller.users.removeCollection);
 };

@@ -1,13 +1,7 @@
 'use strict';
 const md5 = require('md5-node');
-const { SuccessRes, ErrorRes } = require('../utils/response');
+const { SuccessRes, ErrorRes, toObj, toInt } = require('../utils/response');
 const Controller = require('egg').Controller;
-
-function toInt(str) {
-  if (typeof str === 'number') return str;
-  if (!str) return str;
-  return parseInt(str, 10) || 0;
-}
 
 class UserController extends Controller {
   async index() {
@@ -72,6 +66,77 @@ class UserController extends Controller {
     });
     ctx.status = 201;
     ctx.body = SuccessRes(user);
+  }
+
+  async getCollection() {
+    const ctx = this.ctx;
+    const uid = toInt(ctx.params.uid);
+    const user = await ctx.model.User.findByPk(uid);
+    if (!user) {
+      // ctx.status = 404;
+      ctx.body = ErrorRes('用户不存在');
+      return;
+    }
+
+    const { collection } = toObj(user);
+    ctx.model.Video.belongsTo(ctx.model.Videotypes, { foreignKey: 'videotypeid', targetKey: 'id' });
+    const query = id => ({
+      where: { id: toInt(id) },
+      include: [
+        {
+          model: ctx.model.Videotypes,
+          required: true,
+        },
+      ],
+    });
+    const req = collection.map(e => ctx.model.Video.findOne(query(e)));
+    const res = await Promise.all(req);
+    ctx.body = SuccessRes(res);
+  }
+
+  async addCollection() {
+    const ctx = this.ctx;
+    let { uid, vid } = ctx.request.body;
+    uid = toInt(uid);
+    vid = toInt(vid);
+    const user = await ctx.model.User.findByPk(uid);
+    if (!user) {
+      // ctx.status = 404;
+      ctx.body = ErrorRes('用户不存在');
+      return;
+    }
+
+    const userObj = toObj(user);
+    if (userObj.collection.includes(vid)) {
+      ctx.body = SuccessRes({ message: '不能重复添加' });
+      return;
+    }
+    await user.update({ collection: [ ...userObj.collection, vid ] });
+    ctx.body = SuccessRes({
+      message: '添加收藏成功',
+    });
+  }
+  async removeCollection() {
+    const ctx = this.ctx;
+    let { uid, vid } = ctx.request.body;
+    uid = toInt(uid);
+    vid = toInt(vid);
+    const user = await ctx.model.User.findByPk(uid);
+    if (!user) {
+      // ctx.status = 404;
+      ctx.body = ErrorRes('用户不存在');
+      return;
+    }
+    const userObj = toObj(user);
+    const collection = [ ...userObj.collection ];
+    if (collection.includes(vid)) {
+      const index = collection.findIndex(e => e === vid);
+      collection.splice(index, 1);
+      await user.update({ collection });
+      ctx.body = SuccessRes({
+        message: '取消收藏成功',
+      });
+    }
   }
 
   async update() {

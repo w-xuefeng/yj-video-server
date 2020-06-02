@@ -31,7 +31,7 @@ class SessionController extends Controller {
     }
 
     if (md5(md5(password)) === ifuser.password) {
-      const { id, username, created_time } = ifuser;
+      const { id, username, created_time, collection } = ifuser;
       const strings = `${id}-${username}`;
       const token = myEncode(strings, this.app.config.tokenPrivate);
       // 生成 token
@@ -47,7 +47,7 @@ class SessionController extends Controller {
       ctx.rotateCsrfSecret();
       // 刷新 x-csrf-token
       ctx.status = 200;
-      ctx.body = SuccessRes({ id, username, created_time, token });
+      ctx.body = SuccessRes({ id, username, collection, created_time, token });
     } else {
       // ctx.status = 400;
       ctx.body = ErrorRes('密码错误');
